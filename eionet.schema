@@ -1,0 +1,76 @@
+# depends upon:
+#	core.schema
+#
+# Before we go into production we should get our own number on the list at
+# http://www.iana.org/assignments/enterprise-numbers
+# Can be requested at http://www.iana.org/protocols/
+# 26314 is Xcontrol GmbH
+# See also http://www.alvestrand.no/objectid/1.3.6.1.4.1.html
+# Could use 26012
+#
+# Version: $Id: eionet.schema 19803 2011-02-10 11:14:50Z roug $
+
+objectIdentifier EionetRoot 1.3.6.1.4.1.26314
+
+objectIdentifier EionetLDAP EionetRoot:3
+objectIdentifier EionetLDAPattributeType EionetLDAP:1
+objectIdentifier EionetLDAPobjectClass EionetLDAP:2
+
+attributetype ( EionetLDAPattributeType:198
+	NAME 'permittedSender'
+	DESC 'Identifies a sender expression associated with a group.'
+	SUP name )
+
+attributetype ( EionetLDAPattributeType:199
+	NAME 'permittedPerson'
+        DESC 'A reference (DN) to a person that is allowed to send to this mailing list'
+        SUP distinguishedName )
+
+objectClass ( EionetLDAPobjectClass:31
+	NAME 'mailListGroup'
+	DESC 'Identifies a mail list associated with a group.'
+	SUP top AUXILIARY
+	MAY ( permittedSender $ permittedPerson ))
+
+attributetype ( EionetLDAPattributeType:200
+        NAME 'leaderMember'
+        DESC 'A reference (DN) to a member of the group that has a different (superior) status'
+        SUP distinguishedName )
+
+attributetype ( EionetLDAPattributeType:201
+        NAME 'alternateLeader'
+        DESC 'References (DNs) to member of the group that have a different (superior) status, but different from leader status'
+        SUP distinguishedName )
+
+objectClass ( EionetLDAPobjectClass:32
+        NAME 'hierarchicalGroup'
+        DESC 'A group that can describe a leader and alterante leaders'
+        SUP top AUXILIARY
+        MUST uniqueMember
+        MAY ( leaderMember $ alternateLeader ))
+
+# Missing 'country' ?
+objectClass ( EionetLDAPobjectClass:33
+	NAME 'organizationGroup'
+	SUP top AUXILIARY
+	MUST cn
+	MAY ( seeAlso $ businessCategory $ o $ ou $ owner $ mail $
+		registeredAddress $ destinationIndicator $
+		preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $
+		telephoneNumber $ internationaliSDNNumber $
+		facsimileTelephoneNumber $ street $ postOfficeBox $ postalCode $
+		postalAddress $ physicalDeliveryOfficeName $ st $ l $ c $ description ) )
+
+# support for pending organisation for members
+attributetype ( 2.5.4.55 NAME 'pendingUniqueMember'
+        DESC 'Pending unique member of a group'
+        EQUALITY uniqueMemberMatch
+        SUP uniqueMember
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.34 )
+
+objectClass ( 1.2.2.3.3.343.43.33
+        NAME 'eionetOrganisation'
+        DESC 'Eionet specific attributes for organisations'
+        AUXILIARY
+        SUP top
+        MAY pendingUniqueMember )
