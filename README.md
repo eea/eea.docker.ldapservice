@@ -2,7 +2,13 @@ LDAP service
 ============
 
 This is a Dockerfile for an ldap service where the full slapd.conf is stored in an environment variable called `LDAP_CONF`.
-Optional environment variables: `SSL_KEY`, `SSL_CERT`, `SSL_CA_CERTS`
+Optional environment variables: `SSL_KEY`, `SSL_CERT`, `SSL_CA_CERTS` and `LDIF_SEED_URL`.
+
+The optional `LDIF_SEED_URL` is a URL to a file containing LDIF entries created by slapcat. It can be any URL known to `curl` - including `file:`.
+The file will be loaded before the LDAP daemon is started.
+
+Example
+-------
 
 ```
 # Only for the primary copy of the database.
@@ -20,6 +26,7 @@ ldapmaster:
   volumes_from:
   - masterdata
   environment:
+    LDIF_SEED_URL: file:/data/fulldump.ldif
     LDAP_CONF: |
         include /etc/openldap/schema/core.schema
         include /etc/openldap/schema/cosine.schema

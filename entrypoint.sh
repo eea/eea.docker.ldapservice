@@ -55,6 +55,9 @@ fi
 create_conf
 install_sslkey
 
+if [ -n "$LDIF_SEED_URL" ]; then
+    curl -s -o /tmp/seed.ldif "$LDIF_SEED_URL" && /usr/sbin/slapadd -l /tmp/seed.ldif
+fi
 ###########################################################
 # Start LDAP server
 ###########################################################
