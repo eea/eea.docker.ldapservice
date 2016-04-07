@@ -26,7 +26,21 @@ function install_sslkey {
 #####################################################
 function create_conf {
 
-    echo "$LDAP_CONF" >> $CONFIGFILE
+    cat /dev/null > $CONFIGFILE
+    echo "$SLAPD_INCLUDES" >> $CONFIGFILE
+    if [ -n "$SSL_KEY" ]; then
+        echo "TLSCertificateKeyFile /etc/pki/tls/private/server.key" >> $CONFIGFILE
+    fi
+    if [ -n "$SSL_CERT" ]; then
+        echo "TLSCertificateFile    /etc/pki/tls/certs/server.crt" >> $CONFIGFILE
+    fi
+    if [ -n "$SSL_CA_CERTS" ]; then
+        echo "TLSCACertificateFile  /etc/pki/tls/certs/ca-bundle.crt" >> $CONFIGFILE
+    fi
+    echo "$SLAPD_CONF" >> $CONFIGFILE
+    echo "$SLAPD_MODULES" >> $CONFIGFILE
+    echo "$SLAPD_ACIS" >> $CONFIGFILE
+    echo "$SLAPD_DATABASE" >> $CONFIGFILE
 
 }
 
@@ -36,20 +50,9 @@ function create_conf {
 ###########################################################
 
 
-if [ -z "$LDAP_CONF" ]; then
-    echo "The LDAP_CONF environment variable is not specified" 2>&1
+if [ -z "$SLAPD_CONF" ]; then
+    echo "The SLAPD_CONF environment variable is not specified" 2>&1
     exit 2
-fi
-
-cat /dev/null > $CONFIGFILE
-if [ -n "$SSL_KEY" ]; then
-    echo "TLSCertificateKeyFile /etc/pki/tls/private/server.key" >> $CONFIGFILE
-fi
-if [ -n "$SSL_CERT" ]; then
-    echo "TLSCertificateFile    /etc/pki/tls/certs/server.crt" >> $CONFIGFILE
-fi
-if [ -n "$SSL_CA_CERTS" ]; then
-    echo "TLSCACertificateFile  /etc/pki/tls/certs/ca-bundle.crt" >> $CONFIGFILE
 fi
 
 create_conf
