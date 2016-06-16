@@ -56,6 +56,9 @@ if [ -z "$SLAPD_CONF" ]; then
 fi
 
 create_conf
+
+mv /etc/openldap/slapd.d  /etc/openldap/slapd.d.disabled
+
 install_sslkey
 
 if [ -n "$LDIF_SEED_URL" ]; then
