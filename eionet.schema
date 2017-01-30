@@ -74,3 +74,17 @@ objectClass ( 1.2.2.3.3.343.43.33
         AUXILIARY
         SUP top
         MAY pendingUniqueMember )
+
+attributetype ( EionetLDAPattributeType:202
+        NAME 'reasonToCreate'
+        DESC 'Reason to create the Eionet account'
+        EQUALITY caseIgnoreMatch
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectClass ( EionetLDAPobjectClass:34
+        NAME 'eionetAccount'
+        DESC 'Eionet specific attributes for accounts'
+        SUP top AUXILIARY
+        MAY reasonToCreate )
+
