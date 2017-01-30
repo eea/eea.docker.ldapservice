@@ -82,3 +82,15 @@ ldap6:
         -----BEGIN CERTIFICATE-----
         -----END CERTIFICATE-----
 ```
+
+Build instructions
+------------------
+
+Built automatically at https://hub.docker.com/r/eeacms/ldapservice/ when a change is
+pushed to GitHub. To ensure that you always have an immutable build for produuction
+you create a new tag in GitHub.
+
+    $ version=v1.3
+    $ git tag -a $version -m "Release $version of the ldapservice"
+    $ git push origin $version
+
