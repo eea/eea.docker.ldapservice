@@ -64,9 +64,9 @@ install_sslkey
 if [ -n "$LDIF_SEED_URL" ] && [ ! -e .skip-ldif ]; then
     touch .skip-ldif
     curl -s -o /tmp/seed.ldif "$LDIF_SEED_URL"
-    if [ -n "$LDIF_SEED_SUFIX" ]; then
-        echo "Running slapadd with $LDIF_SEED_URL: /usr/sbin/slapadd -b \"$LDIF_SEED_SUFIX\" -c -l /tmp/seed.ldif"
-        /usr/sbin/slapadd -b "$LDIF_SEED_SUFIX" -c -v -l /tmp/seed.ldif
+    if [ -n "$LDIF_SEED_SUFFIX" ]; then
+        echo "Running slapadd with $LDIF_SEED_URL: /usr/sbin/slapadd -b \"$LDIF_SEED_SUFFIX\" -c -l /tmp/seed.ldif"
+        /usr/sbin/slapadd -b "$LDIF_SEED_SUFFIX" -c -v -l /tmp/seed.ldif
     else
         echo "Running slapadd with $LDIF_SEED_URL: /usr/sbin/slapadd -c -l /tmp/seed.ldif"
         /usr/sbin/slapadd -c -v -l /tmp/seed.ldif
