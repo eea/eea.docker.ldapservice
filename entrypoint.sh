@@ -63,10 +63,18 @@ install_sslkey
 
 if [ -n "$LDIF_SEED_URL" ] && [ ! -e .skip-ldif ]; then
     touch .skip-ldif
-    echo "Running slapadd with $LDIF_SEED_URL"
-    curl -s -o /tmp/seed.ldif "$LDIF_SEED_URL" && /usr/sbin/slapadd -b "ou=Business Reporters,o=EIONET,l=Europe" -c -v -l /tmp/seed.ldif
+    curl -s -o /tmp/seed.ldif "$LDIF_SEED_URL"
+    if [ -n "$LDIF_SEED_SUFIX" ]; then
+        echo "Running slapadd with $LDIF_SEED_URL: /usr/sbin/slapadd -b \"$LDIF_SEED_SUFIX\" -c -l /tmp/seed.ldif"
+        /usr/sbin/slapadd -b "$LDIF_SEED_SUFIX" -c -v -l /tmp/seed.ldif
+    else
+        echo "Running slapadd with $LDIF_SEED_URL: /usr/sbin/slapadd -c -l /tmp/seed.ldif"
+        /usr/sbin/slapadd -c -v -l /tmp/seed.ldif
+    fi
 fi
+
 ###########################################################
 # Start LDAP server
 ###########################################################
+echo "Start LDAP server"
 exec /usr/sbin/slapd -h "${LDAPSERVERS:-ldap:/// ldaps:/// ldapi:///}" -u ldap -d "${SLAPD_DEBUG_LEVEL:-16640}"
