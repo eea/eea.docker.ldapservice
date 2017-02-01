@@ -61,8 +61,10 @@ mv /etc/openldap/slapd.d  /etc/openldap/slapd.d.disabled
 
 install_sslkey
 
-if [ -n "$LDIF_SEED_URL" ]; then
-    curl -s -o /tmp/seed.ldif "$LDIF_SEED_URL" && /usr/sbin/slapadd -l /tmp/seed.ldif
+if [ -n "$LDIF_SEED_URL" ] && [ ! -e .skip-ldif ]; then
+    touch .skip-ldif
+    echo "Running slapadd with $LDIF_SEED_URL"
+    curl -s -o /tmp/seed.ldif "$LDIF_SEED_URL" && /usr/sbin/slapadd -b "ou=Business Reporters,o=EIONET,l=Europe" -c -v -l /tmp/seed.ldif
 fi
 ###########################################################
 # Start LDAP server
