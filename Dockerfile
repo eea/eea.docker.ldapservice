@@ -1,4 +1,4 @@
-FROM centos:6
+FROM centos:7
 MAINTAINER Søren Roug <soren.roug@eea.europa.eu>
 
 # Can be mapped for a primary server
