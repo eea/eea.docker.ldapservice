@@ -61,8 +61,9 @@ mv /etc/openldap/slapd.d  /etc/openldap/slapd.d.disabled
 
 install_sslkey
 
-if [ -n "$LDIF_SEED_URL" ] && [ ! -e .skip-ldif ]; then
-    touch .skip-ldif
+if [ -n "$LDIF_SEED_URL" ] && [ ! -e /var/lib/ldap/.skip-ldif-import ]; then
+    # creating the ldif import trigger file in the persistent volume instead of under /
+    touch /var/lib/ldap/.skip-ldif-import
     curl -s -o /tmp/seed.ldif "$LDIF_SEED_URL"
     if [ -n "$LDIF_SEED_SUFFIX" ]; then
         echo "Running slapadd with $LDIF_SEED_URL: /usr/sbin/slapadd -b \"$LDIF_SEED_SUFFIX\" -c -l /tmp/seed.ldif"
@@ -70,6 +71,10 @@ if [ -n "$LDIF_SEED_URL" ] && [ ! -e .skip-ldif ]; then
     else
         echo "Running slapadd with $LDIF_SEED_URL: /usr/sbin/slapadd -c -l /tmp/seed.ldif"
         /usr/sbin/slapadd -c -v -l /tmp/seed.ldif
+    fi
+    # slapadd creates files owned by root; slapd will not start unless we change that
+    if [ -n "$LDAP_UID" ] && [ -n "$LDAP_GID" ]; then
+	/usr/bin/chown $LDAP_UID:$LDAP_GID -R /var/lib/ldap
     fi
 fi
 
