@@ -57,6 +57,11 @@ fi
 
 create_conf
 
+# workaround for /var/lib/ldap on external volume 
+if [ ! -f /var/lib/ldap/DB_CONFIG ]; then
+	cp /etc/openldap/DB_CONFIG /var/lib/ldap/
+fi
+
 mv /etc/openldap/slapd.d  /etc/openldap/slapd.d.disabled
 
 install_sslkey

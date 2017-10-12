@@ -11,7 +11,7 @@ RUN yum install -y openldap-servers openldap openldap-clients wget \
 
 COPY entrypoint.sh /
 COPY eionet.schema /etc/openldap/schema/
-COPY DB_CONFIG /var/lib/ldap/
+COPY DB_CONFIG /etc/openldap/
 
 EXPOSE 389 636
 
