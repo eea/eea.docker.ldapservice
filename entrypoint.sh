@@ -6,7 +6,7 @@
 #CONFDIR=.
 CONFIGFILE=/etc/openldap/slapd.conf
 
-#####################################################
+######################################################
 function install_sslkey {
     if [ -n "$SSL_KEY" ]; then
         echo "$SSL_KEY" >  /etc/pki/tls/private/server.key
