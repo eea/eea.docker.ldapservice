@@ -23,7 +23,7 @@ function install_sslkey {
 }
 
 
-#####################################################
+######################################################
 function create_conf {
 
     cat /dev/null > $CONFIGFILE
