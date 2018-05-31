@@ -14,6 +14,6 @@ RUN mkdir /etc/openldap.local
 COPY eionet.schema /etc/openldap.local/
 COPY DB_CONFIG /etc/openldap.local/
 
-EXPOSE 389 636
+EXPOSE 636
 
 CMD /entrypoint.sh
