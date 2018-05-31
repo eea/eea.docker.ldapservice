@@ -68,7 +68,6 @@ cp /etc/openldap.local/DB_CONFIG /var/lib/ldap/
 # workaround for /etc/openldap on external volume
 # make sure we have the version from the docker image
 # instead of one that may have been modified locally
-
 if [ -f /etc/openldap/schema/eionet.schema ]; then
 	rm -f /etc/openldap/schema/eionet.schema
 fi
