@@ -98,4 +98,4 @@ fi
 # Start LDAP server
 ###########################################################
 echo "Start LDAP server"
-exec /usr/sbin/slapd -h "${LDAPSERVERS:-ldap:/// ldaps:/// ldapi:///}" -u ldap -d "${SLAPD_DEBUG_LEVEL:-16640}"
+exec /usr/sbin/slapd -h "${LDAPSERVERS:ldap:/// ldaps:/// ldapi:///}" -u ldap -d "${SLAPD_DEBUG_LEVEL:-16640}"
