@@ -17,7 +17,7 @@ function install_sslkey {
         unset SSL_CERT
     fi
     if [ -n "$SSL_CA_CERTS" ]; then
-        echo "$SSL_CA_CERTS" > /etc/pki/tls/certs/ca-bundle.crt
+        echo "$SSL_CA_CERTS" >> /etc/pki/tls/certs/ca-bundle.crt
         unset SSL_CA_CERTS
     fi
 }
