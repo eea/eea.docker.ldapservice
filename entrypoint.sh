@@ -57,21 +57,10 @@ fi
 
 create_conf
 
-# workaround for /var/lib/ldap on external volume:
-# make sure we have the version from the docker image
-# instead of one that may have been modified locally
-if [ -f /var/lib/ldap/DB_CONFIG ]; then
-	rm -f /var/lib/ldap/DB_CONFIG
+# workaround for /var/lib/ldap on external volume 
+if [ ! -f /var/lib/ldap/DB_CONFIG ]; then
+	cp /etc/openldap/DB_CONFIG /var/lib/ldap/
 fi
-cp /etc/openldap.local/DB_CONFIG /var/lib/ldap/
-
-# workaround for /etc/openldap on external volume
-# make sure we have the version from the docker image
-# instead of one that may have been modified locally
-if [ -f /etc/openldap/schema/eionet.schema ]; then
-	rm -f /etc/openldap/schema/eionet.schema
-fi
-cp /etc/openldap.local/eionet.schema /etc/openldap/schema/
 
 mv /etc/openldap/slapd.d  /etc/openldap/slapd.d.disabled
 
