@@ -84,11 +84,11 @@ if [ -n "$LDIF_SEED_URL" ] && [ ! -e /var/lib/ldap/.skip-ldif-import ]; then
 fi
 
 ###########################################################
-# Start LDAP server
+# Start LDAP server - or run the backup script
 ###########################################################
 if [ -n "$LDAP_BACKUP" ] && [ "$LDAP_BACKUP" = "yes" ]; then
 	# this is the backup service, no need for slapd running
-	sh /etc/cron.eea/backup_eionet_ldap
+	/bin/sh /etc/cron.eea/backup_eionet_ldap
 else
 	echo "Start LDAP server"
 	exec /usr/sbin/slapd -h "${LDAPSERVERS:-ldap:/// ldaps:/// ldapi:///}" -u ldap -d "${SLAPD_DEBUG_LEVEL:-16640}"
