@@ -10,9 +10,14 @@ RUN yum install -y openldap-servers openldap openldap-clients wget \
     && chmod 700 /var/lib/ldap
 
 COPY entrypoint.sh /
-RUN mkdir /etc/openldap.local
-COPY eionet.schema /etc/openldap.local/
-COPY DB_CONFIG /etc/openldap.local/
+#RUN mkdir /etc/openldap.local
+#COPY eionet.schema /etc/openldap.local/
+#COPY DB_CONFIG /etc/openldap.local/
+COPY eionet.schema /etc/openldap/schema/
+COPY DB_CONFIG /etc/openldap/
+
+RUN mkdir /etc/cron.eea/
+ADD backup_eionet_ldap /etc/cron.eea/
 
 EXPOSE 389 636
 
