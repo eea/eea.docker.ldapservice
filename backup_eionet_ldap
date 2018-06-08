@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# in case the environment does not provide the history level (i.e. for how many days to keep old LDIFs)
+if [ -z "$HISTORY_LEVEL" ]; then
+    HISTORY_LEVEL=150
+fi
+ 
+TRGLOC=/var/local/ldapbackup
+
+if [ ! -d $TRGLOC ]; then
+    /usr/bin/echo "Backup location missing!"
+    exit 2
+fi
+
+DATE="$(/usr/bin/date +%Y-%m-%d_%H-%M-%S)"
+
+/usr/sbin/slapcat | /usr/bin/gzip > ${TRGLOC}/eionet-ldapDB.ldif-$DATE.gz
+
+# remove files older than $HISTLEVEL days
+
+for bckfile in $(/usr/bin/find $TRGLOC -type f -mtime +"$HISTORY_LEVEL"); do
+    /usr/bin/rm -f $bckfile
+done

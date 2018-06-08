@@ -9,6 +9,8 @@ The file will be loaded before the LDAP daemon is started.
 
 The optional `LDIF_SEED_SUFFIX` is useful in the case of having multiple backend databases in the slapd.conf file. It will be used to determine which database to add entries to.
 
+If `LDAP_BACKUP` is set and has the value "yes", then instead of starting slapd, a slapcat-runing backup script will be triggered.
+
 Example
 -------
 

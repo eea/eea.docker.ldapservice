@@ -13,6 +13,9 @@ COPY entrypoint.sh /
 COPY eionet.schema /etc/openldap/schema/
 COPY DB_CONFIG /etc/openldap/
 
+RUN mkdir /etc/cron.eea/
+ADD backup_eionet_ldap /etc/cron.eea/
+
 EXPOSE 389 636
 
 CMD /entrypoint.sh

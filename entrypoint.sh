@@ -6,7 +6,7 @@
 #CONFDIR=.
 CONFIGFILE=/etc/openldap/slapd.conf
 
-#####################################################
+######################################################
 function install_sslkey {
     if [ -n "$SSL_KEY" ]; then
         echo "$SSL_KEY" >  /etc/pki/tls/private/server.key
@@ -17,13 +17,13 @@ function install_sslkey {
         unset SSL_CERT
     fi
     if [ -n "$SSL_CA_CERTS" ]; then
-        echo "$SSL_CA_CERTS" > /etc/pki/tls/certs/ca-bundle.crt
+        echo "$SSL_CA_CERTS" >> /etc/pki/tls/certs/ca-bundle.crt
         unset SSL_CA_CERTS
     fi
 }
 
 
-#####################################################
+######################################################
 function create_conf {
 
     cat /dev/null > $CONFIGFILE
@@ -84,7 +84,13 @@ if [ -n "$LDIF_SEED_URL" ] && [ ! -e /var/lib/ldap/.skip-ldif-import ]; then
 fi
 
 ###########################################################
-# Start LDAP server
+# Start LDAP server - or run the backup script
 ###########################################################
-echo "Start LDAP server"
-exec /usr/sbin/slapd -h "${LDAPSERVERS:-ldap:/// ldaps:/// ldapi:///}" -u ldap -d "${SLAPD_DEBUG_LEVEL:-16640}"
+if [ -n "$LDAP_BACKUP" ] && [ "$LDAP_BACKUP" = "yes" ]; then
+	# this is the backup service, no need for slapd running
+	/bin/sh /etc/cron.eea/backup_eionet_ldap
+else
+	echo "Start LDAP server"
+	exec /usr/sbin/slapd -h "${LDAPSERVERS:-ldap:/// ldaps:/// ldapi:///}" -u ldap -d "${SLAPD_DEBUG_LEVEL:-16640}"
+fi
+
