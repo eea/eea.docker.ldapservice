@@ -4,7 +4,8 @@ MAINTAINER Søren Roug <soren.roug@eea.europa.eu>
 # Can be mapped for a primary server
 #VOLUME /var/lib/ldap
 
-RUN yum install -y openldap-servers openldap openldap-clients wget \
+RUN yum -y update \
+    && yum install -y openldap-servers openldap openldap-clients wget \
     && mkdir -p /var/lib/ldap \
     && chown ldap.ldap /var/lib/ldap \
     && chmod 700 /var/lib/ldap
