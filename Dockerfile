@@ -1,4 +1,4 @@
-FROM centos:7
+FROM alma:9
 MAINTAINER Søren Roug <soren.roug@eea.europa.eu>
 
 # Can be mapped for a primary server
