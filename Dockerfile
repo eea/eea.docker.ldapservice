@@ -1,10 +1,11 @@
-FROM alma:9
+FROM almalinux:9
 MAINTAINER Søren Roug <soren.roug@eea.europa.eu>
 
 # Can be mapped for a primary server
 #VOLUME /var/lib/ldap
 
 RUN yum -y update \
+    && yum install -y epel-release \
     && yum install -y openldap-servers openldap openldap-clients wget \
     && mkdir -p /var/lib/ldap \
     && chown ldap.ldap /var/lib/ldap \
